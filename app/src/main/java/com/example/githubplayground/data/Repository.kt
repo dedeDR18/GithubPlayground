@@ -1,6 +1,8 @@
 package com.example.githubplayground.data
 
 import android.util.Log
+import com.example.githubplayground.data.source.local.entity.UserPagesKey
+import com.example.githubplayground.data.source.local.room.GithubDatabase
 import com.example.githubplayground.data.source.remote.network.ApiService
 import com.example.githubplayground.domain.model.User
 import com.example.githubplayground.domain.repository.IRepository
@@ -16,20 +18,27 @@ import retrofit2.awaitResponse
  * Email      : dededarirahmadi@gmail.com
  */
 
-class Repository(private val apiService: ApiService) : IRepository {
+class Repository(private val apiService: ApiService, val githubDatabase: GithubDatabase) : IRepository {
     override fun getUser(query: String, perPage: Int, page: Int) = flow<Resource<List<User>>> {
         emit(Resource.Loading())
         try {
-            val response = apiService.doUserSearch(query, perPage, page).awaitResponse()
+            val response = apiService.doUserSearch(query.plus("+in:login"), perPage, page).awaitResponse()
             if (response.isSuccessful) {
                 val listUser = response.body()?.userResponseItems
-                val totalCount = response.body()?.total_count
-                val currentPage = page
-                val nextPage = page + 1
+                val totalCount = response.body()?.total_count!!
                 listUser?.let {
                     emit(Resource.Success(DataMapper.mapUserResponseToUserDomain(it)))
                 }
                 //do insertPageKey to database
+                githubDatabase.userPagesKeyDao().saveUserPageKeys(
+                    listOf(
+                        UserPagesKey(
+                            query.plus("+in:login"),
+                            page,
+                            totalCount
+                        )
+                    )
+                )
 
             } else {
                 Log.d("TAG", "error api...")

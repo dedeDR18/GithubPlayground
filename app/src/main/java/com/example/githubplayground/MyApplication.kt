@@ -1,6 +1,7 @@
 package com.example.githubplayground
 
 import android.app.Application
+import com.example.githubplayground.di.databaseModule
 import com.example.githubplayground.di.networkModule
 import com.example.githubplayground.di.repositoryModule
 import org.koin.android.ext.koin.androidContext
@@ -26,7 +27,8 @@ class MyApplication : Application() {
             modules(
                 listOf(
                     networkModule,
-                    repositoryModule
+                    repositoryModule,
+                    databaseModule
                 )
             )
         }
