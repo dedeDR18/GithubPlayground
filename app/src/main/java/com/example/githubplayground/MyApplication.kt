@@ -1,9 +1,7 @@
 package com.example.githubplayground
 
 import android.app.Application
-import com.example.githubplayground.di.databaseModule
-import com.example.githubplayground.di.networkModule
-import com.example.githubplayground.di.repositoryModule
+import com.example.githubplayground.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.android.logger.AndroidLogger
@@ -28,7 +26,9 @@ class MyApplication : Application() {
                 listOf(
                     networkModule,
                     repositoryModule,
-                    databaseModule
+                    databaseModule,
+                    usecaseModule,
+                    viewModelModule
                 )
             )
         }

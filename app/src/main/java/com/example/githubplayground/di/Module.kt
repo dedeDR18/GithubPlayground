@@ -6,9 +6,13 @@ import com.example.githubplayground.data.source.local.room.GithubDatabase
 import com.example.githubplayground.data.source.local.room.UserPagesKeyDao
 import com.example.githubplayground.data.source.remote.network.ApiService
 import com.example.githubplayground.domain.repository.IRepository
+import com.example.githubplayground.domain.usecase.Interactor
+import com.example.githubplayground.domain.usecase.Usecase
+import com.example.githubplayground.presentation.MainViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -34,8 +38,16 @@ val databaseModule = module {
     }
 }
 
+val viewModelModule = module {
+    viewModel { MainViewModel(get()) }
+}
+
 val repositoryModule = module {
-    single<IRepository> { Repository(get()) }
+    single<IRepository> { Repository(get(), get()) }
+}
+
+val usecaseModule = module {
+    factory<Usecase> { Interactor(get()) }
 }
 
 val networkModule = module {

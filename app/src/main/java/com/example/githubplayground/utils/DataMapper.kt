@@ -1,7 +1,9 @@
 package com.example.githubplayground.utils
 
+import com.example.githubplayground.data.source.local.entity.UserPagesKeyEntity
 import com.example.githubplayground.data.source.remote.response.UserResponseItem
 import com.example.githubplayground.domain.model.User
+import com.example.githubplayground.domain.model.UserPagesKey
 
 /**
  * Created on : 31/05/21 | 22.24
@@ -10,7 +12,7 @@ import com.example.githubplayground.domain.model.User
  * Email      : dededarirahmadi@gmail.com
  */
 object DataMapper {
-    fun mapUserResponseToUserDomain(input: List<UserResponseItem>): List<User>{
+    fun mapUserResponseToUserDomain(input: List<UserResponseItem>): List<User> {
         val listUser = ArrayList<User>()
         input.map { input ->
             val u = User(
@@ -27,4 +29,12 @@ object DataMapper {
         }
         return listUser
     }
+
+    fun mapUserPageEntityToUserPageDomain(input: UserPagesKeyEntity) = UserPagesKey(
+        id = input.id,
+        currentPage = input.currentPage,
+        totalCount = input.totalCount,
+        updatedAt = input.updatedAt
+    )
+
 }

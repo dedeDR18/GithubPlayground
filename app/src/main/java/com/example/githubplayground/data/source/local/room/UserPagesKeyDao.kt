@@ -1,9 +1,10 @@
 package com.example.githubplayground.data.source.local.room
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.githubplayground.data.source.local.entity.UserPagesKey
+import com.example.githubplayground.data.source.local.entity.UserPagesKeyEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -12,12 +13,13 @@ import kotlinx.coroutines.flow.Flow
  * Name       : dededarirahmadi
  * Email      : dededarirahmadi@gmail.com
  */
+@Dao
 interface UserPagesKeyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveUserPageKeys(moviePagesKey: List<UserPagesKey>)
+    suspend fun saveUserPageKeys(moviePagesKey: List<UserPagesKeyEntity>)
 
     @Query("SELECT * FROM userpagesentities WHERE id = :id ORDER BY currentPage DESC LIMIT 1")
-    fun getUserPageKey(id: String): Flow<UserPagesKey>
+    fun getUserPageKey(id: String): Flow<UserPagesKeyEntity>
 
     @Query("DELETE FROM userpagesentities")
     suspend fun clearUserPageKey()

@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "userpagesentities")
-data class UserPagesKey(
+data class UserPagesKeyEntity(
     @PrimaryKey
     val id: String,
     val currentPage: Int,

@@ -2,7 +2,7 @@ package com.example.githubplayground.data.source.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.githubplayground.data.source.local.entity.UserPagesKey
+import com.example.githubplayground.data.source.local.entity.UserPagesKeyEntity
 
 /**
  * Created on : 31/05/21 | 23.06
@@ -12,7 +12,7 @@ import com.example.githubplayground.data.source.local.entity.UserPagesKey
  */
 
 @Database(
-    entities = [UserPagesKey::class],
+    entities = [UserPagesKeyEntity::class],
     version = 1,
     exportSchema = false
 )
