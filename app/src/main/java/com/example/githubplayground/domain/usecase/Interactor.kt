@@ -1,8 +1,5 @@
 package com.example.githubplayground.domain.usecase
 
-import com.example.githubplayground.data.Repository
-import com.example.githubplayground.data.Resource
-import com.example.githubplayground.domain.model.User
 import com.example.githubplayground.domain.model.UserPagesKey
 import com.example.githubplayground.domain.repository.IRepository
 import kotlinx.coroutines.flow.Flow

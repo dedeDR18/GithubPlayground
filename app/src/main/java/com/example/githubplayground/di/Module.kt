@@ -25,6 +25,7 @@ import kotlin.math.sin
  * Name       : dededarirahmadi
  * Email      : dededarirahmadi@gmail.com
  */
+private val BASE_URL = "https://api.github.com/"
 
 val databaseModule = module {
     factory { get<GithubDatabase>().userPagesKeyDao() }
@@ -65,7 +66,7 @@ private fun createOkHttpClient(): OkHttpClient {
 
 private fun createRetrofit(client: OkHttpClient): ApiService {
     return Retrofit.Builder()
-        .baseUrl("https://api.github.com/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

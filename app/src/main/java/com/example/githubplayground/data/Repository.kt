@@ -8,7 +8,6 @@ import com.example.githubplayground.domain.model.User
 import com.example.githubplayground.domain.model.UserPagesKey
 import com.example.githubplayground.domain.repository.IRepository
 import com.example.githubplayground.utils.DataMapper
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import retrofit2.awaitResponse
