@@ -1,9 +1,11 @@
 package com.example.githubplayground.di
 
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.githubplayground.data.Repository
+import com.example.githubplayground.data.source.local.entity.UserPagesKeyEntity
 import com.example.githubplayground.data.source.local.room.GithubDatabase
-import com.example.githubplayground.data.source.local.room.UserPagesKeyDao
 import com.example.githubplayground.data.source.remote.network.ApiService
 import com.example.githubplayground.domain.repository.IRepository
 import com.example.githubplayground.domain.usecase.Interactor
@@ -16,8 +18,8 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import kotlin.math.sin
 
 /**
  * Created on : 31/05/21 | 21.26
@@ -35,6 +37,18 @@ val databaseModule = module {
             GithubDatabase::class.java,
             "githubdatabase.db"
         ).fallbackToDestructiveMigration()
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    Executors.newSingleThreadScheduledExecutor().execute(Runnable {
+                    get<GithubDatabase>().userPagesKeyDao().saveUserPageKeys(UserPagesKeyEntity(
+                        " ",
+                        currentPage = 1,
+                        totalCount = 0
+                    ))
+                    })
+                }
+            })
             .build()
     }
 }

@@ -2,6 +2,7 @@ package com.example.githubplayground.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.githubplayground.domain.usecase.Usecase
 
 /**
@@ -11,8 +12,12 @@ import com.example.githubplayground.domain.usecase.Usecase
  * Email      : dededarirahmadi@gmail.com
  */
 
-class MainViewModel(val usecase: Usecase) : ViewModel() {
-    fun searchUser(query: String, page: Int) = usecase.doSearchUser(query, page)
+class MainViewModel(private val usecase: Usecase) : ViewModel() {
+    fun searchUser(query: String, page: Int) = usecase.doSearchUser(query, page).asLiveData()
 
-    fun lastestPage(query: String) = usecase.doGetCurrentPage(query).asLiveData()
+    fun lastestPage() = usecase.doGetCurrentPage().asLiveData()
+
+    fun clearPageData(){
+        usecase.clearPageData(viewModelScope)
+    }
 }

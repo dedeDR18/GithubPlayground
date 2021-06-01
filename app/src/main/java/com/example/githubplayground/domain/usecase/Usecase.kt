@@ -3,6 +3,7 @@ package com.example.githubplayground.domain.usecase
 import com.example.githubplayground.data.Resource
 import com.example.githubplayground.domain.model.User
 import com.example.githubplayground.domain.model.UserPagesKey
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,5 +14,6 @@ import kotlinx.coroutines.flow.Flow
  */
 interface Usecase {
     fun doSearchUser(query:String, page: Int): Flow<Resource<List<User>>>
-    fun doGetCurrentPage(query:String): Flow<UserPagesKey>
+    fun doGetCurrentPage(): Flow<UserPagesKey>
+    fun clearPageData(coroutineScope: CoroutineScope)
 }

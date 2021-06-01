@@ -18,8 +18,11 @@ interface UserPagesKeyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUserPageKeys(moviePagesKey: List<UserPagesKeyEntity>)
 
-    @Query("SELECT * FROM userpagesentities WHERE id = :id ORDER BY currentPage DESC LIMIT 1")
-    fun getUserPageKey(id: String): Flow<UserPagesKeyEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveUserPageKeys(moviePagesKey: UserPagesKeyEntity)
+
+    @Query("SELECT * FROM userpagesentities ORDER BY updatedAt DESC LIMIT 1")
+    fun getUserPageKey(): Flow<UserPagesKeyEntity>
 
     @Query("DELETE FROM userpagesentities")
     suspend fun clearUserPageKey()
