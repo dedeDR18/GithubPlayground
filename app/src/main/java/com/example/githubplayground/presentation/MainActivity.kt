@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observePage() {
+        //need to fix
         viewModel.lastestPage().observe(this, Observer { paging ->
             paging?.let {
                 pageToLoad = it.currentPage + 1
