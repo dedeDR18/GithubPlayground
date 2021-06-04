@@ -28,7 +28,6 @@ class Repository(private val apiService: ApiService, val githubDatabase: GithubD
     override fun getUser(query: String, perPage: Int, page: Int) = flow<Resource<List<User>>> {
         emit(Resource.Loading())
         try {
-            val realQuery = URLEncoder.encode(query.plus("+in:login"), "utf-8")
             val response =
                 apiService.doUserSearch(query.plus("+in:login"), perPage, page).awaitResponse()
             if (response.isSuccessful) {

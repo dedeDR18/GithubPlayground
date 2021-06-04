@@ -1,7 +1,10 @@
 package com.example.githubplayground.presentation
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,9 +18,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var userAdapter: UserAdapter
     private val viewModel: MainViewModel by viewModel()
-    private var totalPages = 0
+    private var totalPages = 10
     private var pageToLoad = 1
-    private var currentPageLoaded = 0
+    private var currentPageLoaded = 1
+    private var firstSearch = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,20 +32,38 @@ class MainActivity : AppCompatActivity() {
         initRv()
 
         binding.btnSearch.setOnClickListener {
+            firstSearch = true
             viewModel.clearPageData()
             search(getQuery()!!, pageToLoad)
         }
 
-        observePage()
+
+        binding.outlinedTextFieldSearch.editText?.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                userAdapter.clearData()
+                pageToLoad = 1
+            }
+
+        })
+
+
+        //observePage()
         loadMore()
 
     }
 
     private fun loadMore() {
         userAdapter.onLoadMore = {
-            if (currentPageLoaded + 1 <= totalPages) {
-                search(getQuery()!!, pageToLoad)
-            }
+            pageToLoad += 1
+            search(getQuery()!!, pageToLoad)
         }
     }
 
@@ -82,18 +104,21 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun observePage() {
-        //need to fix
-        viewModel.lastestPage().observe(this, Observer { paging ->
-            paging?.let {
-                pageToLoad = it.currentPage + 1
-                totalPages = it.totalCount / 20
-                currentPageLoaded = it.currentPage
-            }
-        })
-
-
-    }
+//    private fun observePage() {
+//        //need to fix
+//        if (firstSearch){
+//            viewModel.lastestPage().observe(this, Observer { paging ->
+//                paging?.let {
+//                    pageToLoad = it.currentPage + 1
+//                    totalPages = it.totalCount / 20
+//                    currentPageLoaded = it.currentPage
+//                }
+//            })
+//        }
+//
+//
+//
+//    }
 
     private fun isLoading(state: Boolean) {
         binding.loading = state

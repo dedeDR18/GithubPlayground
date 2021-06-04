@@ -17,6 +17,11 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     val listUser = ArrayList<User>()
     var onLoadMore: (() -> Unit)? = null
 
+    fun clearData(){
+        listUser.clear()
+        notifyDataSetChanged()
+    }
+
     fun setData(list: List<User>) {
         if (list == null) return
         listUser.clear()
