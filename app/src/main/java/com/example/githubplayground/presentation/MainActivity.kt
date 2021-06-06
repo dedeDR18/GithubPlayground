@@ -38,23 +38,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        binding.outlinedTextFieldSearch.editText?.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                userAdapter.clearData()
-                pageToLoad = 1
-            }
-
-        })
 
 
+        textFieldListener()
         //observePage()
         loadMore()
 
@@ -119,6 +105,24 @@ class MainActivity : AppCompatActivity() {
 //
 //
 //    }
+
+    fun textFieldListener(){
+        binding.outlinedTextFieldSearch.editText?.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                userAdapter.clearData()
+                pageToLoad = 1
+            }
+
+        })
+    }
 
     private fun isLoading(state: Boolean) {
         binding.loading = state
