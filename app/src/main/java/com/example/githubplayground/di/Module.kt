@@ -37,18 +37,18 @@ val databaseModule = module {
             GithubDatabase::class.java,
             "githubdatabase.db"
         ).fallbackToDestructiveMigration()
-            .addCallback(object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    Executors.newSingleThreadScheduledExecutor().execute(Runnable {
-                    get<GithubDatabase>().userPagesKeyDao().saveUserPageKeys(UserPagesKeyEntity(
-                        " ",
-                        currentPage = 1,
-                        totalCount = 0
-                    ))
-                    })
-                }
-            })
+//            .addCallback(object : RoomDatabase.Callback() {
+//                override fun onCreate(db: SupportSQLiteDatabase) {
+//                    super.onCreate(db)
+//                    Executors.newSingleThreadScheduledExecutor().execute(Runnable {
+//                    get<GithubDatabase>().userPagesKeyDao().saveUserPageKeys(UserPagesKeyEntity(
+//                        " ",
+//                        currentPage = 1,
+//                        totalCount = 2
+//                    ))
+//                    })
+//                }
+//            })
             .build()
     }
 }

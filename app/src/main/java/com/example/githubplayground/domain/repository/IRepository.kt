@@ -16,4 +16,5 @@ interface IRepository {
     fun getUser(query: String, perPage:Int = 20, page:Int): Flow<Resource<List<User>>>
     fun getCurrentPage(): Flow<UserPagesKey>
     fun clearPageData(coroutineScope: CoroutineScope)
+    suspend fun getCurrentTotalCount(): Int
 }

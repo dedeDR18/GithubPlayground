@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.githubplayground.data.source.local.entity.UserPagesKeyEntity
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -26,4 +27,7 @@ interface UserPagesKeyDao {
 
     @Query("DELETE FROM userpagesentities")
     suspend fun clearUserPageKey()
+
+    @Query("SELECT totalCount FROM userpagesentities")
+    suspend fun getTotalCount(): Int
 }

@@ -19,5 +19,6 @@ class Interactor(private val repository: IRepository) : Usecase {
         repository.getCurrentPage()
 
     override fun clearPageData(coroutineScope: CoroutineScope) = repository.clearPageData(coroutineScope)
+    override suspend fun getCurrentTotalCount(): Int = repository.getCurrentTotalCount()
 
 }

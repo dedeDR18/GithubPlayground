@@ -3,8 +3,8 @@ package com.example.githubplayground.presentation
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,10 +18,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var userAdapter: UserAdapter
     private val viewModel: MainViewModel by viewModel()
-    private var totalPages = 10
     private var pageToLoad = 1
-    private var currentPageLoaded = 1
-    private var firstSearch = false
+    private var totalCount = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,24 +30,34 @@ class MainActivity : AppCompatActivity() {
         initRv()
 
         binding.btnSearch.setOnClickListener {
-            firstSearch = true
             viewModel.clearPageData()
             search(getQuery()!!, pageToLoad)
         }
 
-
-
-
         textFieldListener()
-        //observePage()
+        observeTotalCount()
+
         loadMore()
 
+    }
+
+    private fun observeTotalCount() {
+        viewModel.getTotalCount().observe(this, Observer { total ->
+            total?.let {
+                totalCount = it
+            }
+        })
     }
 
     private fun loadMore() {
         userAdapter.onLoadMore = {
             pageToLoad += 1
-            search(getQuery()!!, pageToLoad)
+            val totalPage = totalCount / 20
+            if (pageToLoad <= totalPage) {
+                search(getQuery()!!, pageToLoad)
+            } else {
+                Toast.makeText(this, "there is no page to load..", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -72,12 +80,7 @@ class MainActivity : AppCompatActivity() {
                     val result = response.data
                     result?.let { data ->
                         if (data.isEmpty()) {
-                            Snackbar.make(
-                                this,
-                                binding.root,
-                                "User Not found...",
-                                Snackbar.LENGTH_SHORT
-                            )
+                            Toast.makeText(this, "User Not found...", Toast.LENGTH_SHORT).show()
                         } else {
                             if (page == 1) userAdapter.setData(data) else userAdapter.updateData(
                                 data
@@ -90,24 +93,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-//    private fun observePage() {
-//        //need to fix
-//        if (firstSearch){
-//            viewModel.lastestPage().observe(this, Observer { paging ->
-//                paging?.let {
-//                    pageToLoad = it.currentPage + 1
-//                    totalPages = it.totalCount / 20
-//                    currentPageLoaded = it.currentPage
-//                }
-//            })
-//        }
-//
-//
-//
-//    }
-
-    fun textFieldListener(){
-        binding.outlinedTextFieldSearch.editText?.addTextChangedListener(object : TextWatcher{
+    fun textFieldListener() {
+        binding.outlinedTextFieldSearch.editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }

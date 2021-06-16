@@ -16,4 +16,5 @@ interface Usecase {
     fun doSearchUser(query:String, page: Int): Flow<Resource<List<User>>>
     fun doGetCurrentPage(): Flow<UserPagesKey>
     fun clearPageData(coroutineScope: CoroutineScope)
+    suspend fun getCurrentTotalCount(): Int
 }

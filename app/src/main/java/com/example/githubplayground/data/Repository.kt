@@ -8,11 +8,9 @@ import com.example.githubplayground.domain.model.User
 import com.example.githubplayground.domain.model.UserPagesKey
 import com.example.githubplayground.domain.repository.IRepository
 import com.example.githubplayground.utils.DataMapper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
 import java.net.URLEncoder
 
@@ -68,5 +66,10 @@ class Repository(private val apiService: ApiService, val githubDatabase: GithubD
             githubDatabase.userPagesKeyDao().clearUserPageKey()
         }
     }
+
+    override suspend fun getCurrentTotalCount(): Int {
+       return githubDatabase.userPagesKeyDao().getTotalCount()
+    }
+
 
 }

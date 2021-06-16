@@ -1,9 +1,8 @@
 package com.example.githubplayground.presentation
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.githubplayground.domain.usecase.Usecase
+import kotlinx.coroutines.launch
 
 /**
  * Created on : 31/05/21 | 23.31
@@ -15,9 +14,18 @@ import com.example.githubplayground.domain.usecase.Usecase
 class MainViewModel(private val usecase: Usecase) : ViewModel() {
     fun searchUser(query: String, page: Int) = usecase.doSearchUser(query, page).asLiveData()
 
-    fun lastestPage() = usecase.doGetCurrentPage().asLiveData()
 
-    fun clearPageData(){
+    fun clearPageData() {
         usecase.clearPageData(viewModelScope)
     }
+
+    fun getTotalCount(): LiveData<Int> {
+        val total = MutableLiveData<Int>()
+        viewModelScope.launch {
+            total.postValue(usecase.getCurrentTotalCount())
+        }
+       return total
+    }
+
+
 }
